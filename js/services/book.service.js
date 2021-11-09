@@ -54,37 +54,41 @@ function putBook(book) {
 
 
 function getFromAPI(server,input) {
-  if (googleBooksCache[input]) {
-    console.log('takin data from cache')
-    storageService.save(input, googleBooksCache[input]);
-    return Promise.resolve(googleBooksCache[input]);
-  }
+  if (Date.now()- lastUpdate <1000*10) {
+    if (googleBooksCache[input]) {
+      console.log('takin data from cache')
+      storageService.save(input, googleBooksCache[input]);
+      return Promise.resolve(googleBooksCache[input]);
+    }
+  
+    const googlebooks = storageService.load(input);
+    if (googlebooks ) {
+      googleBooksCache[input] = googlebooks;
+      console.log('taking data from local storage');
+      return Promise.resolve(googleBooksCache[input]);
+    }
+  } else {
 
-  const googlebooks = storageService.load(input);
-  if (googlebooks ) {
-    googleBooksCache[input] = googlebooks;
-    console.log('taking data from local storage');
-    return Promise.resolve(googleBooksCache[input]);
-  }
-
-  if (!googleBooksCache[input]) {
-    console.log('taking data from server');
-    lastUpdate = Date.now();
-    const prm = axios.get(server)
-      .then(res => {
-        console.log('Axios Res:', res);
-        googleBooksCache[input] = res.data;
-        console.log(googleBooksCache[input]);
-        return res.data
-      })
-      .catch(err => {
-        console.log('Had issues talking to server', err);
-      })
-      .finally(() => {
-        console.log('Finally always run');
-      })
-    return prm;
-  }
+    if (!googleBooksCache[input]) {
+      console.log('taking data from server');
+      lastUpdate = Date.now();
+      const prm = axios.get(server)
+        .then(res => {
+          console.log('Axios Res:', res);
+          googleBooksCache[input] = res.data;
+          console.log(googleBooksCache[input]);
+          return res.data
+        })
+        .catch(err => {
+          console.log('Had issues talking to server', err);
+        })
+        .finally(() => {
+          console.log('Finally always run');
+        })
+      return prm;
+    }
+   }
+ 
 }
 
 function addGoogleBook(googleBook) {
