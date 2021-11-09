@@ -4,10 +4,16 @@ import { storageService } from './storage.service.js';
 export const bookService = {
   query,
   getBookById,
-  putBook
+  putBook,
+  getFromAPI
 }
 
 const BOOKS_KEY = 'books';
+const GOOGLE_BOOKS = 'googleBooksDB'
+var googleBooksCache = {};
+var lastUpdate = 0;
+
+
 _createBooks();
 
 
@@ -15,14 +21,48 @@ function query() {
   return asyncStorageService.query(BOOKS_KEY);
 }
 
-function getBookById (bookId) {
-   return asyncStorageService.get(BOOKS_KEY,bookId)
+function getBookById(bookId) {
+  return asyncStorageService.get(BOOKS_KEY, bookId)
 }
 
-function putBook (book) {
-    asyncStorageService.put(BOOKS_KEY,book)
+function putBook(book) {
+  asyncStorageService.put(BOOKS_KEY, book)
 }
 
+
+function getFromAPI(server) {
+  if (googleBooksCache[GOOGLE_BOOKS] ) {
+    console.log('takin data from cache')
+    storageService.save(GOOGLE_BOOKS, googleBooksCache[GOOGLE_BOOKS]);
+    return Promise.resolve(googleBooksCache[GOOGLE_BOOKS]);
+  }
+
+  const googlebooks = storageService.load(GOOGLE_BOOKS);
+  if (googlebooks ) {
+    googleBooksCache[GOOGLE_BOOKS] = googlebooks;
+    console.log('taking data from local storage');
+    return Promise.resolve(googleBooksCache[GOOGLE_BOOKS]);
+  }
+
+  if (!googleBooksCache[GOOGLE_BOOKS]) {
+    console.log('taking data from server');
+    lastUpdate = Date.now();
+    const prm = axios.get(server)
+      .then(res => {
+        console.log('Axios Res:', res);
+        googleBooksCache[GOOGLE_BOOKS] = res.data;
+        console.log(googleBooksCache[GOOGLE_BOOKS]);
+        return res.data
+      })
+      .catch(err => {
+        console.log('Had issues talking to server', err);
+      })
+      .finally(() => {
+        console.log('Finally always run');
+      })
+    return prm;
+  }
+}
 
 
 function _createBooks() {
