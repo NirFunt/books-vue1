@@ -43,6 +43,12 @@ export default {
             bookService.removeBook(bookId)
             .then(()=> bookService.query()
             .then (booksList => this.books = booksList))
+
+            // we must do .then after removing the book, and inside this .then do the query with its .this,
+            //  the reason is that removebook returns promise, therefore it wait for resolve or reject, so the code
+            // after the removeBook is contining progressing without waiting for removeBook to complelte becuase 
+            // the JS engine knows that removeBook will return a promose will we deal with later when its ready on .this
+            // therefore it continue the code without waiting and go with the code flow.
         }
     },
     computed: {

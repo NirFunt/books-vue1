@@ -7,12 +7,14 @@ export const bookService = {
   putBook,
   getFromAPI,
   addGoogleBook,
-  removeBook
+  removeBook,
+  getNextBookId,
+  getPreviousBookId
 }
 
 const BOOKS_KEY = 'books';
 var googleBooksCache = {};
-var lastUpdate = 0;
+var lastUpdate = Date.now();
 
 
 _createBooks();
@@ -30,6 +32,22 @@ function getBookById(bookId) {
   return asyncStorageService.get(BOOKS_KEY, bookId)
 }
 
+function getNextBookId(bookId) {
+  return query()
+    .then(books => {
+      const index = books.findIndex(book => book.id === bookId);
+      return (index === books.length -1)? books[0].id: books[index+1].id
+    })
+}
+
+function getPreviousBookId(bookId) {
+  return query()
+    .then(books => {
+      const index = books.findIndex(book => book.id === bookId);
+      return (index === 0)? books[books.length-1].id: books[index-1].id
+    })
+}
+
 function putBook(book) {
  return asyncStorageService.put(BOOKS_KEY, book)
 }
@@ -43,7 +61,7 @@ function getFromAPI(server,input) {
   }
 
   const googlebooks = storageService.load(input);
-  if (googlebooks) {
+  if (googlebooks ) {
     googleBooksCache[input] = googlebooks;
     console.log('taking data from local storage');
     return Promise.resolve(googleBooksCache[input]);

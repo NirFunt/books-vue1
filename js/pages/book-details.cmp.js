@@ -24,32 +24,59 @@ export default {
         
         <review-add :book="book" @reviewFinished="saveReview" />
         
+        <div>
+
+        <router-link :to="'/details/'+previousBookId">Previous  </router-link>|
+        <router-link :to="'/details/'+nextBookId">Next  </router-link>|
         <router-link to="/book"> Go Back </router-link>
+        </div>
         </section>
     `,
 
     data() {
         return {
-            isShowMore : false,
-            book : null,
+            isShowMore: false,
+            book: null,
+            previousBookId: '',
+            nextBookId: ''
         };
     },
     created() {
-        const bookId = this.$route.params.bookId;
-        bookService.getBookById(bookId)
-            .then (book => this.book = book);
+        // const bookId = this.$route.params.bookId;
+        // bookService.getBookById(bookId)
+        //     .then (book => {
+        //         this.book = book
+        //         this.previousBookId = bookService.getPreviousBookId(this.book.id);
+        //         this.nextBookId = bookService.getNextBookId(this.book.id);
+        //     });
     },
     methods: {
-        showMore () {
+        showMore() {
             this.isShowMore = true;
         },
-        showLess () {
+        showLess() {
             this.isShowMore = false;
         },
         saveReview(book) {
             bookService.putBook(book);
-        }
+        },
+    },
 
+    watch: {
+        '$route.params.bookId': {
+            handler() {
+                const { bookId } = this.$route.params;
+                bookService.getBookById(bookId)
+                    .then(book => {
+                        this.book = book
+                        bookService.getPreviousBookId(this.book.id)
+                            .then(previousId => this.previousBookId = previousId);
+                        bookService.getNextBookId(this.book.id)
+                            .then(nextId => this.nextBookId = nextId);
+                    });
+            },
+            immediate: true
+        }
     },
     computed: {
         detailsToShow() {
@@ -57,12 +84,12 @@ export default {
             else if (this.book.pageCount >= 200 & this.book.pageCount < 500) return 'Decent Reading';
             else return 'Light Reading';
         },
-        oldToShow () {
+        oldToShow() {
             var theYear = new Date().getFullYear();
             if (theYear - this.book.publishedDate <= 10) return 'New!';
             if (theYear - this.book.publishedDate > 10) return 'Veteran Book';
         },
-        showIfForSell () {
+        showIfForSell() {
             if (this.book.listPrice.isOnSale) return 'Book For Sale';
             else return 'Out of Order';
         }

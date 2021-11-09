@@ -67,7 +67,6 @@ export default {
                 })
         },
 
-
         loadReview(reviewId) {
             var review = this.book.reviews.find(review => review.id === reviewId);
             this.fullName = review.fullName;
@@ -79,6 +78,17 @@ export default {
             var index = this.book.reviews.findIndex(review => review.id === reviewId);
             this.book.reviews.splice(index, 1);
             this.$emit('reviewFinished', this.book)
+        }
+    },
+
+    watch: {
+        'book': {
+            handler() {
+                if (this.book.reviews) {
+                    this.reviews = this.book.reviews;
+                }
+            },
+            immediate: true
         }
     },
     computed: {
