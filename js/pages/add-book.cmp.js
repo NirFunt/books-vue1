@@ -7,8 +7,8 @@ export default {
      <input type="text" v-model="searchedInput" >
      <button @click="goSearch"> Search </button>
      
-     <ul> <li v-for="book in searchedBooks"> {{book.volumeInfo.title}} 
-         <button @click="addGoogleBook"> + </button> </li> 
+     <ul v-if="googleBooks"> <li v-for="book in googleBooks"> {{book.volumeInfo.title}} 
+         <button @click="addGoogleBook(book)"> + </button> </li> 
     </ul>
 
 </section>
@@ -16,7 +16,7 @@ export default {
     data() {
         return {
             searchedInput: '',
-            searchedBooks: ''
+            googleBooks: ''
         };
     },
     created() {
@@ -31,11 +31,13 @@ export default {
             bookService.getFromAPI(`https://www.googleapis.com/books/v1/volumes?printType=books&q=${this.searchedInput}`)
             .then(googleBooks => {
                 console.log(googleBooks);
-                this.searchedBooks = googleBooks.items;
+                this.googleBooks = googleBooks.items;
             });
         },
-        addGoogleBook () {
-            console.log('hi')
+        addGoogleBook (book) {
+            console.log(book);
+            this.googleBooks = this.googleBooks.filter(googleBook => googleBook.id !== book.id);
+            bookService.addGoogleBook(book);
         }
     },
 

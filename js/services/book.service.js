@@ -5,7 +5,8 @@ export const bookService = {
   query,
   getBookById,
   putBook,
-  getFromAPI
+  getFromAPI,
+  addGoogleBook
 }
 
 const BOOKS_KEY = 'books';
@@ -31,14 +32,14 @@ function putBook(book) {
 
 
 function getFromAPI(server) {
-  if (googleBooksCache[GOOGLE_BOOKS] ) {
+  if (googleBooksCache[GOOGLE_BOOKS]) {
     console.log('takin data from cache')
     storageService.save(GOOGLE_BOOKS, googleBooksCache[GOOGLE_BOOKS]);
     return Promise.resolve(googleBooksCache[GOOGLE_BOOKS]);
   }
 
   const googlebooks = storageService.load(GOOGLE_BOOKS);
-  if (googlebooks ) {
+  if (googlebooks) {
     googleBooksCache[GOOGLE_BOOKS] = googlebooks;
     console.log('taking data from local storage');
     return Promise.resolve(googleBooksCache[GOOGLE_BOOKS]);
@@ -62,6 +63,23 @@ function getFromAPI(server) {
       })
     return prm;
   }
+}
+
+function addGoogleBook(googleBook) {
+  var book = {
+    id: googleBook.id,
+    title : googleBook.volumeInfo.title,
+    subtitle:  googleBook.volumeInfo.subtitle,
+    authors: googleBook.volumeInfo.authors,
+    publishedDate: googleBook.volumeInfo.publishedDate,
+    description : googleBook.volumeInfo.description,
+    pageCount : googleBook.volumeInfo.pageCount,
+    categories: googleBook.volumeInfo.categories,
+    thumbnail : googleBook.volumeInfo.imageLinks.thumbnail,
+    language :  googleBook.volumeInfo.imageLinks.language,
+    listPrice : {amount: 50,currencyCode : 'ILS', isOnSale : 'true' }
+  }
+  asyncStorageService.post(BOOKS_KEY, book);
 }
 
 

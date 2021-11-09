@@ -2,20 +2,17 @@ import { bookService } from "../services/book.service.js";
 
 import bookFilter from "../cmps/book-filter.cmp.js";
 import bookList from "../cmps/book-list.cmp.js";
-import bookDetails from "./book-details.cmp.js";
 
 
 export default {
     components: {
         bookFilter,
         bookList,
-        bookDetails
     },
     template: `
         <section class="book-app">
         <book-filter @filtered="setFilter" v-if="showBooks"/> 
         <book-list :books="booksToShow" @selected="selectBook" v-if="showBooks"/>
-        <book-details :book="selectedBook" v-if="!showBooks" @closeDetails="closeDetails"/>
         </section>
     `,
 

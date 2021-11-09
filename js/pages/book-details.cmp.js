@@ -22,7 +22,7 @@ export default {
         <button @click="showLess" v-if="isShowMore"> Show Less </button>
         </div>
         
-        <review-add :book="book" @reviewFinished="putReview" />
+        <review-add :book="book" @reviewFinished="saveReview" />
         
         <router-link to="/book"> Go Back </router-link>
         </section>
@@ -46,7 +46,7 @@ export default {
         showLess () {
             this.isShowMore = false;
         },
-        putReview(book) {
+        saveReview(book) {
             bookService.putBook(book);
         }
 
