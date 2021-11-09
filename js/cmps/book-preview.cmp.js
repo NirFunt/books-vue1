@@ -10,7 +10,10 @@ export default {
        <p> {{book.title}} </p>
        <img :src="book.thumbnail">
        <p :class="priceColorToShow" > {{amountToShow}} </p>
+       <div>
        <router-link :to="'/details/'+book.id"> Details </router-link>
+       <button @click="removeBook(book.id)"> x </button>
+        </div>
         </section>
     `,
 
@@ -23,7 +26,9 @@ export default {
 
     },
     methods: {
-
+        removeBook (bookId){
+            this.$emit('remove', bookId);
+        }
 
     },
     computed: {

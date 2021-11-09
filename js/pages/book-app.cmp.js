@@ -12,7 +12,7 @@ export default {
     template: `
         <section class="book-app">
         <book-filter @filtered="setFilter" v-if="showBooks"/> 
-        <book-list :books="booksToShow" @selected="selectBook" v-if="showBooks"/>
+        <book-list :books="booksToShow" @selected="selectBook" @remove="removeBook" v-if="showBooks"/>
         </section>
     `,
 
@@ -27,7 +27,6 @@ export default {
     created() {
         bookService.query()
         .then (booksList => this.books = booksList)
-
     },
     methods: {
         setFilter(filterBy) {
@@ -40,6 +39,11 @@ export default {
         closeDetails() {
             this.showBooks = true;
         },
+        removeBook(bookId) {
+            bookService.removeBook(bookId)
+            .then(()=> bookService.query()
+            .then (booksList => this.books = booksList))
+        }
     },
     computed: {
         booksToShow() {

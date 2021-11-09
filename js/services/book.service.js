@@ -6,11 +6,11 @@ export const bookService = {
   getBookById,
   putBook,
   getFromAPI,
-  addGoogleBook
+  addGoogleBook,
+  removeBook
 }
 
 const BOOKS_KEY = 'books';
-const GOOGLE_BOOKS = 'googleBooksDB'
 var googleBooksCache = {};
 var lastUpdate = 0;
 
@@ -22,37 +22,41 @@ function query() {
   return asyncStorageService.query(BOOKS_KEY);
 }
 
+function removeBook(bookId) {
+ return asyncStorageService.remove(BOOKS_KEY,bookId);
+}
+
 function getBookById(bookId) {
   return asyncStorageService.get(BOOKS_KEY, bookId)
 }
 
 function putBook(book) {
-  asyncStorageService.put(BOOKS_KEY, book)
+ return asyncStorageService.put(BOOKS_KEY, book)
 }
 
 
-function getFromAPI(server) {
-  if (googleBooksCache[GOOGLE_BOOKS]) {
+function getFromAPI(server,input) {
+  if (googleBooksCache[input]) {
     console.log('takin data from cache')
-    storageService.save(GOOGLE_BOOKS, googleBooksCache[GOOGLE_BOOKS]);
-    return Promise.resolve(googleBooksCache[GOOGLE_BOOKS]);
+    storageService.save(input, googleBooksCache[input]);
+    return Promise.resolve(googleBooksCache[input]);
   }
 
-  const googlebooks = storageService.load(GOOGLE_BOOKS);
+  const googlebooks = storageService.load(input);
   if (googlebooks) {
-    googleBooksCache[GOOGLE_BOOKS] = googlebooks;
+    googleBooksCache[input] = googlebooks;
     console.log('taking data from local storage');
-    return Promise.resolve(googleBooksCache[GOOGLE_BOOKS]);
+    return Promise.resolve(googleBooksCache[input]);
   }
 
-  if (!googleBooksCache[GOOGLE_BOOKS]) {
+  if (!googleBooksCache[input]) {
     console.log('taking data from server');
     lastUpdate = Date.now();
     const prm = axios.get(server)
       .then(res => {
         console.log('Axios Res:', res);
-        googleBooksCache[GOOGLE_BOOKS] = res.data;
-        console.log(googleBooksCache[GOOGLE_BOOKS]);
+        googleBooksCache[input] = res.data;
+        console.log(googleBooksCache[input]);
         return res.data
       })
       .catch(err => {

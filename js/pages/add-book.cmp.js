@@ -28,7 +28,7 @@ export default {
     methods: {
         goSearch() {
             console.log(this.searchedInput);
-            bookService.getFromAPI(`https://www.googleapis.com/books/v1/volumes?printType=books&q=${this.searchedInput}`)
+            bookService.getFromAPI(`https://www.googleapis.com/books/v1/volumes?printType=books&q=${this.searchedInput}`,this.searchedInput)
             .then(googleBooks => {
                 console.log(googleBooks);
                 this.googleBooks = googleBooks.items;

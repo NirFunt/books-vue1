@@ -9,7 +9,7 @@ export default {
         <section class="book-list">
             <ul>  
                 <li v-for="book in books" :key ="book.id"> 
-                    <book-preview :book="book"/>
+                    <book-preview :book="book" @remove="removeBook"/>
                 </li>
             </ul>
         </section>
@@ -27,6 +27,9 @@ export default {
         onBookClicked(bookId) {
             this.$emit('selected',bookId);
         },
+        removeBook (bookId) {
+            this.$emit('remove',bookId);
+        }
 
     },
     computed: {

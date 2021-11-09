@@ -13,6 +13,9 @@ p {
     margin: 0;
 }
 
+a {
+    text-decoration: none;
+}
 
 .red{
     color: red;
@@ -137,12 +140,14 @@ p {
     background-color: lightpink;
     border: green solid 2px;
     display: flex;
+    /* flex-grow: 1; */
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
     height: 150px;
     width: 130px;
     text-align: center;
+    font-size: 0.8rem;
 }
 
 .book-preview img {
