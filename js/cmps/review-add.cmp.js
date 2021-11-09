@@ -27,6 +27,7 @@ export default {
              {{review.fullName}} <button type="button" @click.stop="deleteReview(review.id)">x</button> </li>
         </ul>       
         <button>Submit</button> 
+        
        </form>
         </section>
     `,
@@ -48,7 +49,7 @@ export default {
     },
     mounted() {
         var elNameInput = this.$refs.nameInput;
-        elNameInput.style.color= 'red';
+        elNameInput.style.color = 'red';
     },
     methods: {
         saveReview() {
@@ -58,13 +59,15 @@ export default {
                 this.book.reviews = [review];
             }
             this.$emit('reviewFinished', this.book);
-            window.location.href="/index.html#/book";
+            window.location.href = "/index.html#/book";
             eventBus.$emit('showMsg',
-            {txt: `review by <span> ${review.fullName} </span> was added to the book <span> ${this.book.title} </span>!`,
-             type: 'success', url: `/details/${this.book.id}`} )
+                {
+                    txt: `review by <span> ${review.fullName} </span> was added to the book <span> ${this.book.title} </span>!`,
+                    type: 'success', url: `/details/${this.book.id}`
+                })
         },
 
-       
+
         loadReview(reviewId) {
             var review = this.book.reviews.find(review => review.id === reviewId);
             this.fullName = review.fullName;

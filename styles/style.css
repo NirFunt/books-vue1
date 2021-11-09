@@ -1,3 +1,5 @@
+/* BASIC  */
+
 * {
     box-sizing: border-box;
 }
@@ -10,6 +12,37 @@ body {
 p {
     margin: 0;
 }
+
+
+.red{
+    color: red;
+}
+
+.green {
+    color: green;
+} 
+
+/* animations  */
+
+.fade-enter-active, .fade-leave-active {
+    transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    opacity: 0;
+}
+
+/* links */
+
+.router-link-exact-active {
+    color: gold
+}
+
+.active-link {
+    color: darkgoldenrod;
+}
+
+
+/* HEADER & FOOTER  */
 
 .app-header {
     display: flex;
@@ -27,12 +60,70 @@ p {
     text-align: center;
 }
 
-.book-app { 
+/* USER-MSG */
+
+.user-msg {
+    width: 200px;
+    min-height: 50px;
+    position: fixed;
+    top: 15px;
+    right: 0;
+    text-align: center;
+}
+
+.user-msg span {
+    color: blue;
+}
+.success {
+    color: green;
+    border: green solid 3px;
+    background-color: honeydew;
+}
+
+.error {
+    color: red;
+    border: red solid 3px;
+    background-color: honeydew;
+}
+
+
+/* PAGES  */
+
+/* HOME PAGE */
+
+.home-page  {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.home-page img {
+    width: 70%;
+}
+
+/* ABOUT PAGE */
+
+.about-page { 
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.about-page img {
+    width: 50%;
+}
+
+
+/* BOOK APP PAGE  */
+    .book-app { 
     display: flex;
     flex-direction: column;
     align-items: center;
     /* height: 90vh; */
     /* max-height: 90vh; */
+}
+
+.book-filter {
+    display: flex;
+    flex-direction: column;
 }
 
 .book-list ul {
@@ -54,97 +145,36 @@ p {
     text-align: center;
 }
 
+.book-preview img {
+    width: 40%;
+}
+
+
+/* BOOK DETAILS PAGE */
+
 .book-details {
- display: flex;
- flex-direction: column;
- align-items: center;
- gap: 10px;
- padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
 }
-
-.red{
-    color: red;
-}
-
-.green {
-    color: green;
-} 
 
 .book-details img {
     width: 25%;
 }
 
-/* .book-details img title {
-    color: red;
-    font-size: 2rem;
-} */
+/* REVIEW FORM  */
 
-
-/* PAGES  */
-
-.book-preview img {
-    width: 40%;
+.review-form {
+    display: flex;
+    flex-direction: column;
+    max-width: 200px;
 }
 
-.home-page  {
-   text-align: center;
-   margin-bottom: 20px;
-}
-
-.home-page img {
-    width: 70%;
-}
-
-.about-page { 
-    text-align: center;
-    margin-bottom: 15px;
-}
-
-.about-page img {
-    width: 50%;
-}
-
-.fade-enter-active, .fade-leave-active {
-    transition: opacity .5s;
-  }
-  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-    opacity: 0;
-  }
-
-  .review-form {
-      display: flex;
-      flex-direction: column;
-  }
-
-  .review-text-box {
-      height: 100px;
-      width: 200px;
-  }
-
-  /* USER-MSG */
-
-  .user-msg {
-      width: 200px;
-      min-height: 50px;
-      position: fixed;
-      top: 15px;
-      right: 0;
-      text-align: center;
-  }
-
-  .user-msg span {
-    color: blue;
-}
-  .success {
-      color: green;
-      border: green solid 3px;
-      background-color: honeydew;
-  }
-
-  .error {
-    color: red;
-    border: red solid 3px;
-    background-color: honeydew;
+.review-text-box {
+    height: 100px;
+    width: 200px;
 }
 
 .review-add ul{
@@ -155,5 +185,11 @@ p {
 }
 
 .review-add li{
-  border: gray 1px solid;
+    border: gray 1px solid;
+}
+
+/* BOOK ADD PAGE  */
+
+.app-header {
+    
 }
