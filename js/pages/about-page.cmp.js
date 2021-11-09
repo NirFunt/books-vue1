@@ -1,8 +1,6 @@
 export default {
     template: `
 <section class="about-page">
-
-
   <button @click="toggle"> Toggle Timestemp </button>
   <h3> About us </h3>
     <img src="img/magic-book2.jpg">
@@ -11,6 +9,13 @@ export default {
     <div v-if="isShowHeader">TimeStemp = {{timeStemp}} </div>
   </transition>
  
+  <hr>
+            <nav>
+                <router-link to="/about/team">Team</router-link> |
+                <router-link to="/about/service">Services</router-link>
+            </nav>
+            <router-view></router-view>
+
 </section>
     `
     ,

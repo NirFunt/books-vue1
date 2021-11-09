@@ -59,7 +59,8 @@ export default {
                 this.book.reviews = [review];
             }
             this.$emit('reviewFinished', this.book);
-            window.location.href = "/index.html#/book";
+            // window.location.href = "/index.html#/book";
+            this.$router.push('/book');
             eventBus.$emit('showMsg',
                 {
                     txt: `review by <span> ${review.fullName} </span> was added to the book <span> ${this.book.title} </span>!`,
